@@ -5,6 +5,7 @@ on: [push, pull_request] # When pushing to any branch then run this action
 env:
   DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
   DOCKER_PASSWORD: ${{secrets.DOCKER_KEY}}
+  DOCKER_REPO: docker-action-sample
 
 jobs:
   push-image-to-docker-hub:  # job name
@@ -20,7 +21,7 @@ jobs:
       run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
 
     - name: Build the Docker image # push The image to the docker hub
-      run: docker build . --file Dockerfile --tag $DOCKER_USER/docker-action-sample:${{ steps.date.outputs.date }}
+      run: docker build . --file Dockerfile --tag $DOCKER_USER/$DOCKER_REPO:${{ steps.date.outputs.date }}
 
     - name: Docker Push
-      run: docker push $DOCKER_USER/docker-action-sample:${{ steps.date.outputs.date }}
+      run: docker push $DOCKER_USER/$DOCKER_REPO:${{ steps.date.outputs.date }}
